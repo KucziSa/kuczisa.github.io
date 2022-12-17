@@ -1,0 +1,26 @@
+ 
+html{height:100%}body{background-color:#222;perspective:1000px;transform-style:preserve-3d;font-family:Arial;min-height:100%;box-sizing:border-box;margin:0}a{text-decoration:none}.perspective-wrapper{transform:translateZ(0);padding:30px;box-sizing:border-box;border-radius:50%;width:300px;height:300px;transform-style:preserve-3d;backface-visibility:hidden;display:flex;flex-flow:row wrap;justify-content:center;align-content:center;text-align:center;color:#fff;position:absolute;top:50%;left:50%;margin:-150px auto auto -150px;font-family:Gabriela,georgia,sans-serif}.site-branding{transform-style:preserve-3d}.site-logo{pointer-events:none}.site-logo,nav{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}#header{perspective:1000px}#header,#header *{transform-style:preserve-3d}#header-region{transform:rotateX(0) rotateY(0);box-sizing:border-box;backface-visibility:hidden;text-align:center;color:#fff;font-family:Gabriela,Arial,georgia,sans-serif}.site-logo{transform:translateZ(44px)}.site-logo a[href]{display:block;position:absolute;left:0;right:0;top:0;bottom:0;z-index:1}.site-logo a[href]:focus{outline:none}.site-logo svg{width:225px;display:block;margin:auto}.site-logo path{fill:#fff;fill-opacity:0;stroke:#fff;stroke-width:1.5;stroke-dasharray:200;stroke-dashoffset:200;animation:draw-logo 5s linear forwards}.site-name{display:none;font-size:32px;font-weight:700}.site-slogan{display:block;transform:translateZ(27px);text-transform:uppercase;letter-spacing:11.5px;margin-top:3px;position:relative;left:5.5px;font-size:12px;color:#999;cursor:default}.main-nav,.main-nav ul{transform-style:preserve-3d}.main-nav ul{list-style:none;padding:0;margin-top:25px;margin-bottom:0;font-size:19px}.main-nav li{transform:translateZ(37px);transition:transform .3s ease;text-align:center}.main-nav li:last-child{margin-bottom:0}.main-nav li:hover{transform:translateZ(100px)}.main-nav li a{color:#fff;outline:none}.main-nav li>*{padding:15px}.contact{position:relative}.contact__email{position:absolute;left:50%;top:0;transform:translateX(-50%);display:block}.contact__button{cursor:pointer;position:relative;z-index:1}.anim-float-out-bottom{animation:float-out-bottom .15s ease-out forwards}.anim-float-in-top{animation:float-in-top .15s ease-out forwards}@keyframes float-out-bottom{to{opacity:0;visibility:hidden;transform:translate3d(0,30px,0)}}@keyframes float-in-top{0%{opacity:0;visibility:hidden;transform:translate3d(-50%,-30px,0)}to{opacity:1;visibility:visible;transform:translate3d(-50%,0,0)}}@keyframes draw-logo{to{stroke-dashoffset:0;fill-opacity:1}}
+/* cyrillic-ext */
+@font-face {
+    font-family: 'Gabriela';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/gabriela/v14/qkBWXvsO6sreR8E-b8m0xLt3mQ.woff2) format('woff2');
+    unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+  }
+  /* cyrillic */
+  @font-face {
+    font-family: 'Gabriela';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/gabriela/v14/qkBWXvsO6sreR8E-b8m9xLt3mQ.woff2) format('woff2');
+    unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  }
+  /* latin */
+  @font-face {
+    font-family: 'Gabriela';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/gabriela/v14/qkBWXvsO6sreR8E-b8m5xLs.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
