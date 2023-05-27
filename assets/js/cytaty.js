@@ -1,4 +1,4 @@
-Tips=new Array(
+var cytaty = [
 "Pośpiech jest złym doradca, ale często jedynym.",
 "Nie wierz we wszystko, co myślisz.",
 "Życie nabiera sensu dopiero w wyobraźni.",
@@ -155,4 +155,13 @@ Tips=new Array(
 "Czasem płaczę krojąc marchewki, żeby cebule nie myślały, że są brzydkie czy coś.",
 "Nie jest dobrze. Jedna porzeczka dziennie, woda bez gazu, lewatywa i znów porzeczka.",
 "Jestem wyjątkowy. Tak jak wszyscy pozostali.",
-"Zauważasz, że zaczynasz się starzeć, gdy świeczki są droższe niż tort."); 
+"Zauważasz, że zaczynasz się starzeć, gdy świeczki są droższe niż tort."]; 
+
+function generateRandomQuote() {
+    var randomNumber = Math.floor(Math.random() * cytaty.length);
+    var randomQuote = cytaty[randomNumber];
+    return randomQuote;
+}
+
+var quoteContainer = document.getElementById("quoteContainer");
+quoteContainer.innerHTML = generateRandomQuote();
