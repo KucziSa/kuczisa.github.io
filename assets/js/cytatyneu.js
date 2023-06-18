@@ -1,4 +1,4 @@
-var cyaty=[
+var cyaty = [
 "Schau niemals von oben auf jemanden herab, es sei denn, du hilfst ihm aufzustehen.",
 "Eile ist ein schlechter Berater, aber oft der einzige.",
 "Das Risiko in die Augen zu schauen ist furchterregend. Besonders, wenn sie schön sind.",
@@ -10,13 +10,9 @@ var cyaty=[
 "Wenn dich niemand hasst, bedeutet das, dass mit dir etwas nicht stimmt.",
 "Weh die Künstlern, auf die niemand spuckt.",
 "Aufgrund des Mangels an eigenen Erfolgen sind die Niederlagen anderer nicht zu verachten."
-
-
-
-
 ];
 
-function generateRandomQuote(){
+function generateRandomQuote() {
     var randomNumber = Math.floor(Math.random() * cytaty.length);
     var randomQuote = cytaty[randomNumber];
     return randomQuote;
