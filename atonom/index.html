@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Atonom - Kuczi$</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js"></script>
+    <script src="scripts/chosen.jquery.min.js"></script>
+    <script src="scripts/physicsjs/physicsjs-full-0.5.1.js"></script>
+    <script src="scripts/three.min.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/Smidge.js"></script>
+    <script src="script.js"></script>
+
+    <script src="scanner.js"></script>
+    <script src="iupac.js"></script>
+    <style>
+
+body {
+    font-size: 0.7em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 0;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+        .errorMsg {
+            color: red;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="css/chosen.css">
+</head>
+<body>
+    <h1>Hipolit Płatek - atonom</h1>
+
+    <p>
+    Select molecule:
+    <select id="moleculeselect" class="my_select_box" data-placeholder="Select Molecule">
+        <option value=""></option>
+      </select>
+      </p>
+    <p>
+    <label>Enter IUPAC Name: </label>
+    <input id="iupacName" value="" size="40" />
+    <button id="parseButton">Parse</button>
+    </p>
+
+    <p><button id="startButton">Start</button> <button id="stopButton">Stop</button></p>
+    <p><label id="errorMsg" class="errorMsg">meh</label></p>
+    <p><input id="cameraHeight" type="range" min="1" max="1000" style="width:500px;" /></p>
+    <p><input id="cameraDistance" type="range" min="1" max="1000" style="width:500px;" /></p>
+    <p>Drag: <input id="dragRange" type="range" min="1" max="1000" style="width:200px;" /><label id="dragLabel"/></p>
+
+    <script>
+
+
+    </script>
+
+    <div id="3dcontainer">
+
+    </div>
+
+</body>
+</html>
