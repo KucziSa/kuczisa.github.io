@@ -1,40 +1,339 @@
 <!DOCTYPE html>
-
-<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <!--<link rel="manifest" href="manifest.json">-->
-  <link rel="shortcut icon"  href="/apps/logo.jpg">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#222222"/>
-
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="theme-color" content="#222222">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="description" content="Hipolit Płatek, Fullstack Webdeveloper.">
-
-
-  <link rel="apple-touch-icon" href="/apps/logo.jpg">
   <title>Hipolit Płatek</title>
-  <link href="/assets/startPage/Main.css" rel="stylesheet" type="text/css">
-  </head>
+  <style>
+    /* Google Fonts: Gabriela */
+    @font-face {
+      font-family: 'Gabriela';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/gabriela/v23/qkBWXvsO6sreR8E-b8m0xLt3mQ.woff2) format('woff2');
+      unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+    }
+    @font-face {
+      font-family: 'Gabriela';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/gabriela/v23/qkBWXvsO6sreR8E-b8m9xLt3mQ.woff2) format('woff2');
+      unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+    }
+    @font-face {
+      font-family: 'Gabriela';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/gabriela/v23/qkBWXvsO6sreR8E-b8m3xLt3mQ.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    @font-face {
+      font-family: 'Gabriela';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/gabriela/v23/qkBWXvsO6sreR8E-b8m5xLs.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+  </style>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      background-color: #222;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      font-family: Arial, sans-serif;
+      min-height: 100%;
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .perspective-wrapper {
+      transform: translateZ(0);
+      padding: 30px;
+      box-sizing: border-box;
+      border-radius: 50%;
+      width: 300px;
+      height: 300px;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: center;
+      align-content: center;
+      text-align: center;
+      color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -150px auto auto -150px;
+      font-family: Gabriela, Georgia, sans-serif;
+    }
+
+    .site-branding {
+      transform-style: preserve-3d;
+    }
+
+    .site-logo {
+      pointer-events: none;
+      user-select: none;
+      transform: translateZ(44px);
+    }
+
+    nav {
+      user-select: none;
+    }
+
+    .site-logo a[href] {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+    }
+
+    .site-logo a[href]:focus {
+      outline: none;
+    }
+
+    .site-logo svg {
+      width: 320px;
+      display: block;
+      margin: auto;
+    }
+
+    .site-logo text {
+      font-family: Gabriela, Georgia, sans-serif;
+      font-size: 32px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      fill: #fff;
+      fill-opacity: 0;
+      stroke: #fff;
+      stroke-width: 1.5;
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+      paint-order: stroke fill;
+      animation: draw-logo 5s linear forwards, fill-logo 0.6s ease 1s forwards;
+    }
+
+    .site-name {
+      display: none;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .site-slogan {
+      display: block;
+      transform: translateZ(27px);
+      text-transform: uppercase;
+      letter-spacing: 11.5px;
+      margin-top: 3px;
+      position: relative;
+      left: 5.5px;
+      font-size: 12px;
+      color: #999;
+      cursor: default;
+    }
+
+    .main-nav,
+    .main-nav ul {
+      transform-style: preserve-3d;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 25px;
+      margin-bottom: 0;
+      font-size: 19px;
+    }
+
+    .main-nav li {
+      transform: translateZ(37px);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+
+    .main-nav li:last-child {
+      margin-bottom: 0;
+    }
+
+    .main-nav li:hover {
+      transform: translateZ(100px);
+    }
+
+    .main-nav__link {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: inline-block;
+      padding: 12px 18px;
+      color: #fff;
+      outline: none;
+      text-decoration: none;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .main-nav__link--visible {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    .contact {
+      position: relative;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact__button {
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      padding: 12px 18px;
+      display: inline-block;
+    }
+
+    .anim-float-out-bottom {
+      animation: float-out-bottom 0.2s ease-out forwards;
+    }
+
+    @keyframes draw-logo {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes fill-logo {
+      to {
+        fill-opacity: 1;
+      }
+    }
+
+    @keyframes float-out-bottom {
+      to {
+        opacity: 0;
+        visibility: hidden;
+        transform: translate3d(0, 30px, 0);
+      }
+    }
+  </style>
+</head>
 <body>
-  <div class="perspective-wrapper" style="transform: rotateX(1.38008deg) rotateY(-3.30472deg);">
+  <div class="perspective-wrapper">
     <div class="site-branding">
-      <h1 class="site-name">Kuczi$</h1>
-      <div class="site-logo" style="font-size:35px; font-family: Imprint MT Shadow;">Hipolit Płatek</div>
-      <!--<a class="site-slogan" id="api">Views: 0</a>-->
-      <a class="site-slogan" id="clock">0</a>
-      <script src="assets/startPage/clock.js"></script>
-      <a class="site-slogan">aka. Kuczi$</a>
+      <h1 class="site-name">Hipolit Płatek</h1>
+      <div class="site-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="300" height="42" viewBox="0 0 320 48">
+          <text x="50%" y="50%" class="logo-text" text-anchor="middle" dominant-baseline="middle">Hipolit Płatek</text>
+        </svg>
+      </div>
+      <a class="site-slogan">chemik</a>
     </div>
+
     <nav class="main-nav">
       <ul>
         <li class="contact">
-          <a id="email" class="contact__email"></a>
           <div id="contactbttn" class="contact__button">About Me</div>
-
+          <a id="startlink" class="main-nav__link" href="https://www.google.pl" target="_blank" rel="noopener noreferrer">Start</a>
         </li>
       </ul>
     </nav>
-
   </div>
 
-<script type="text/javascript" src="/assets/startPage/Main.js"></script>
-</body></html>
+  <script>
+    (() => {
+      const wrapper = document.querySelector('.perspective-wrapper');
+      if (wrapper) {
+        const decay = 0.2;
+        let trackedX = 0;
+        let trackedY = 0;
+        let rotX = 0;
+        let rotY = 0;
+
+        const resetPosition = () => {
+          trackedX = 0;
+          trackedY = 0;
+        };
+
+        const trackMouse = (event) => {
+          trackedX = -((window.innerWidth / 2) - event.clientX) / 20;
+          trackedY = ((window.innerHeight / 2) - event.clientY) / 15;
+        };
+
+        const trackOrientation = (event) => {
+          const { beta, gamma } = event;
+          if (beta === null || gamma === null) return;
+          if (gamma <= -60 || gamma >= 60) return;
+          if (beta <= -25 || beta >= 95) return;
+          trackedX = -gamma / 2;
+          trackedY = (beta - 35) / 2;
+        };
+
+        const animate = () => {
+          rotY += (trackedX - rotY) * decay;
+          rotX += (trackedY - rotX) * decay;
+
+          const roundedX = Math.round(rotX * 100) / 100;
+          const roundedY = Math.round(rotY * 100) / 100;
+
+          if (roundedX !== 0 || roundedY !== 0) {
+            wrapper.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+          } else {
+            wrapper.style.transform = 'none';
+          }
+
+          requestAnimationFrame(animate);
+        };
+
+        window.addEventListener('mousemove', trackMouse, false);
+        window.addEventListener('deviceorientation', trackOrientation, false);
+        document.addEventListener('mouseout', resetPosition, false);
+        animate();
+      }
+
+      const contactButton = document.getElementById('contactbttn');
+      const startLink = document.getElementById('startlink');
+      let isRevealed = false;
+      if (contactButton) {
+        contactButton.addEventListener('click', () => {
+          if (isRevealed) return;
+          isRevealed = true;
+          if (startLink) {
+            requestAnimationFrame(() => {
+              startLink.classList.add('main-nav__link--visible');
+            });
+          }
+          contactButton.classList.add('anim-float-out-bottom');
+          const removeButton = () => {
+            if (contactButton.parentElement) {
+              contactButton.remove();
+            }
+          };
+          contactButton.addEventListener('animationend', removeButton, { once: true });
+          setTimeout(removeButton, 350);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
