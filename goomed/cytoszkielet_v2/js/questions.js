@@ -1,5 +1,5 @@
 // dodaj do istniejącej tablicy `questions`:
-questions = questions[
+let questions = [
   {
     numb: 101,
     question: "Energia do transportu przez pory jądrowe pochodzi z:",
