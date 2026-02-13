@@ -6,7 +6,41 @@ const Bn = document.getElementById("Bn");
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 
-// 7 pozycji uciekania (w procentach sceny) – podobnie jak u Ciebie, tylko responsywnie
+
+// =============================
+// GOOGLE FORMS NOTIFICATION
+// =============================
+
+function notifyYesWithGoogleForm() {
+
+  // wysyłaj tylko raz z danego urządzenia
+  if (localStorage.getItem("valentine_yes_sent") === "1") return;
+  localStorage.setItem("valentine_yes_sent", "1");
+
+  const FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScwN2b3o3ssd3BEFxWA3uY20IFzNRv-31twRun9BcFSqmCE7A/formResponse";
+
+  const formData = new FormData();
+
+  const now = new Date().toISOString();
+
+  // pierwsze pole
+  formData.append("entry.83020380", "Klik TAK 💘");
+
+  // drugie pole - np data + przeglądarka
+  formData.append("entry.2026786856", `Czas: ${now} | UA: ${navigator.userAgent}`);
+
+  fetch(FORM_ACTION, {
+    method: "POST",
+    mode: "no-cors",
+    body: formData
+  }).catch(()=>{});
+}
+
+
+// =============================
+// UCIEKAJĄCY PRZYCISK NIE
+// =============================
+
 const positions = [
   { top: 0.10, left: 0.55 },
   { top: 0.10, left: 0.05 },
@@ -14,7 +48,7 @@ const positions = [
   { top: 0.12, left: 0.68 },
   { top: 0.62, left: 0.22 },
   { top: 0.56, left: 0.62 },
-  { top: 0.28, left: 0.58 }, // powrót mniej więcej na start
+  { top: 0.28, left: 0.58 }
 ];
 
 function clamp(n, min, max) {
@@ -22,10 +56,10 @@ function clamp(n, min, max) {
 }
 
 function placeNo(index) {
+
   const rectStage = stage.getBoundingClientRect();
   const rectBn = Bn.getBoundingClientRect();
 
-  // ile miejsca mamy realnie (żeby nie wyjechać poza scenę)
   const maxLeft = rectStage.width - rectBn.width;
   const maxTop = rectStage.height - rectBn.height;
 
@@ -39,7 +73,7 @@ function placeNo(index) {
 }
 
 function f() {
-  // Twoje flagi 1..7 – bez zmiany “funkcjonalności”
+
   if (flag === 1) { placeNo(0); flag = 2; }
   else if (flag === 2) { placeNo(1); flag = 3; }
   else if (flag === 3) { placeNo(2); flag = 4; }
@@ -49,31 +83,40 @@ function f() {
   else if (flag === 7) { placeNo(6); flag = 1; }
 }
 
+
+// =============================
+// PRZYCISK TAK
+// =============================
+
 function f1() {
-  // (opcjonalnie) tutaj możesz wywołać “powiadom mnie”, patrz sekcja 3
-  // notifyYes();
+
+  // 🔥 wysyła info do Google Forms
+  notifyYesWithGoogleForm();
 
   const msgs = [
-    "Ojej! 💘 To teraz oficjalnie: jesteś moją walentynką! 😍",
-    "Yaaay! 🥰 Wiedziałem/am! Walentynki będą piękne 💜",
-    "Serce mówi TAK! 💞 Dziękuję — uśmiech nie zejdzie mi z twarzy 😄"
+    "Ojej! 💘 Czyli oficjalnie jesteś moją walentynką! 😍",
+    "Yaaay! 🥰 Wiedziałem! Walentynki uratowane 💜",
+    "Serce mówi TAK! 💞 Nie ma już odwrotu 😄"
   ];
 
   alert(msgs[allert - 1]);
+
   allert += 1;
   if (allert > 3) allert = 1;
 }
 
-// Desktop: ucieczka na najechanie
+
+// =============================
+// EVENTS
+// =============================
+
 noBtn.addEventListener("pointerenter", f);
 
-// Mobile: ucieczka na dotyk / próbę kliknięcia
 noBtn.addEventListener("pointerdown", (e) => {
   e.preventDefault();
   f();
 });
 
-// Dodatkowo dla iOS (czasem pomaga)
 noBtn.addEventListener("touchstart", (e) => {
   e.preventDefault();
   f();
@@ -81,12 +124,9 @@ noBtn.addEventListener("touchstart", (e) => {
 
 yesBtn.addEventListener("click", f1);
 
-// Pilnujemy poprawnych pozycji po zmianie rozmiaru ekranu / obrocie telefonu
 window.addEventListener("resize", () => {
-  // ustaw w bieżącej “fazie” (żeby nie skakało losowo)
   const currentIndex = (flag === 1) ? 6 : (flag - 2);
   placeNo(clamp(currentIndex, 0, positions.length - 1));
 });
 
-// ustaw startową pozycję po załadowaniu
 placeNo(6);
