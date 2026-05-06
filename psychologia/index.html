@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:sans-serif;background:#f5f3ff;min-height:100vh;padding:20px}
+#app{max-width:640px;margin:0 auto}
+.header{background:linear-gradient(135deg,#7c3aed,#0d9488);border-radius:16px;padding:28px 24px;text-align:center;margin-bottom:24px;color:#fff}
+.header h1{font-size:20px;font-weight:600;margin-bottom:8px}
+.header p{font-size:13px;opacity:.85}
+.progress-wrap{margin-bottom:20px}
+.progress-track{background:#e9d5ff;border-radius:99px;height:8px;margin-bottom:6px}
+.progress-fill{background:linear-gradient(90deg,#7c3aed,#0d9488);border-radius:99px;height:8px;transition:width .4s}
+.progress-text{font-size:12px;color:#7c3aed;text-align:right;font-weight:500}
+.q-card{background:#fff;border-radius:16px;padding:24px;margin-bottom:16px;border:1px solid #ede9fe;box-shadow:0 2px 8px rgba(124,58,237,.08)}
+.q-label{font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.q-text{font-size:15px;color:#1e1b4b;line-height:1.6;font-weight:500}
+.answers{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.ans-btn{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;font-size:14px;color:#374151;line-height:1.5;text-align:left;transition:all .2s;width:100%}
+.ans-btn:hover{border-color:#7c3aed;background:#f5f3ff}
+.ans-btn.active-Z{border-color:#7c3aed;background:#ede9fe;color:#3730a3}
+.ans-btn.active-U{border-color:#0d9488;background:#ccfbf1;color:#134e4a}
+.ans-btn.active-E{border-color:#ea580c;background:#fff7ed;color:#7c2d12}
+.ans-letter{min-width:28px;height:28px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6b7280;flex-shrink:0}
+.ans-btn.active-Z .ans-letter{background:#7c3aed;color:#fff}
+.ans-btn.active-U .ans-letter{background:#0d9488;color:#fff}
+.ans-btn.active-E .ans-letter{background:#ea580c;color:#fff}
+.next-btn{width:100%;padding:14px;border-radius:12px;border:none;background:#7c3aed;color:#fff;font-size:15px;font-weight:600;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s}
+.next-btn.ready{opacity:1;pointer-events:all}
+.next-btn.ready:hover{background:#6d28d9}
+.result-wrap{background:#fff;border-radius:16px;padding:28px 24px;border:1px solid #ede9fe;box-shadow:0 2px 8px rgba(124,58,237,.08)}
+.result-emoji{font-size:52px;text-align:center;margin-bottom:12px}
+.result-sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:6px}
+.result-name{text-align:center;font-size:26px;font-weight:700;margin-bottom:20px}
+.bars{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{width:115px;font-size:13px;font-weight:600;flex-shrink:0}
+.bar-track{flex:1;background:#f3f4f6;border-radius:99px;height:12px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;transition:width 1s ease}
+.fill-Z{background:#7c3aed}
+.fill-U{background:#0d9488}
+.fill-E{background:#ea580c}
+.bar-pct{width:36px;text-align:right;font-size:13px;color:#6b7280}
+.result-desc{background:#f5f3ff;border-radius:12px;padding:16px;font-size:14px;color:#3730a3;line-height:1.7;margin-bottom:20px}
+.restart-btn{width:100%;padding:12px;border-radius:12px;border:1.5px solid #7c3aed;background:#fff;color:#7c3aed;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.restart-btn:hover{background:#f5f3ff}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var questions=[
+{text:"Dowiadujesz się, że za 10 minut będzie niezapowiedziana wejściówka, a ty nie jesteś przygotowany/a.",answers:[{t:"Szybko przeglądasz notatki i próbujesz zapamiętać najważniejsze informacje.",s:"Z"},{t:"Mówisz, że boli cię głowa i pytasz, czy możesz wyjść.",s:"U"},{t:"Denerwujesz się i powtarzasz sobie, że to jest kompletnie niesprawiedliwe.",s:"E"}]},
+{text:"Kłócisz się z bliską osobą o coś ważnego i rozmowa się zaostrza.",answers:[{t:"Proponujesz przerwę i wracasz do tematu, gdy oboje się uspokojecie.",s:"Z"},{t:"Wychodzisz z pokoju i słuchasz muzyki, by nie myśleć o sprawie.",s:"U"},{t:"Czujesz się pokrzywdzony/a i nie możesz powstrzymać łez lub krzyku.",s:"E"}]},
+{text:"Nie zdałeś/aś ważnego egzaminu i masz go poprawiać za tydzień.",answers:[{t:"Układasz plan nauki na każdy dzień do poprawki.",s:"Z"},{t:"Nie myślisz o tym — jakoś to będzie.",s:"U"},{t:"Jesteś na siebie wściekły/a i czujesz się beznadziejnie.",s:"E"}]},
+{text:"Twój projekt jest krytykowany przez nauczyciela/szefa publicznie.",answers:[{t:"Robisz notatki z uwag i pytasz, co konkretnie poprawić.",s:"Z"},{t:"Udajesz, że cię to nie dotyczy i myślisz o czymś innym.",s:"U"},{t:"Czujesz się zawstydzony/a i masz ochotę uciec z sali.",s:"E"}]},
+{text:"Dowiadujesz się, że kolega/koleżanka plotkuje na twój temat.",answers:[{t:"Rozmawiasz z tą osobą bezpośrednio i wyjaśniasz sytuację.",s:"Z"},{t:"Unikasz tej osoby i starasz się nie myśleć o sprawie.",s:"U"},{t:"Czujesz złość i żal, opowiadasz innym o tej niesprawiedliwości.",s:"E"}]},
+{text:"Zgubiłeś/aś ważne dokumenty tuż przed ważnym spotkaniem.",answers:[{t:"Metodycznie przeszukujesz każde możliwe miejsce.",s:"Z"},{t:"Odkładasz spotkanie i mówisz, że coś wypadło.",s:"U"},{t:"Wpadasz w panikę i nie wiesz, od czego zacząć.",s:"E"}]},
+{text:"Dostajesz trudną diagnozę medyczną i czekasz na wyniki badań.",answers:[{t:"Zbierasz informacje i szukasz najlepszego specjalisty.",s:"Z"},{t:"Starasz się żyć normalnie i nie myśleć o tym, co może być.",s:"U"},{t:"Bardzo się boisz i rozmawiasz z bliskimi o swoich lękach.",s:"E"}]},
+{text:"Twój samochód psuje się w środku drogi do ważnego miejsca.",answers:[{t:"Dzwonisz po pomoc, szukasz alternatywy i informujesz osoby czekające.",s:"Z"},{t:"Czekasz przy aucie i masz nadzieję, że ktoś się pojawi.",s:"U"},{t:"Czujesz się bezsilny/a i frustracja cię przytłacza.",s:"E"}]},
+{text:"Masz za dużo zadań do wykonania w za krótkim czasie.",answers:[{t:"Tworzysz listę według priorytetu i zaczynasz od najważniejszego.",s:"Z"},{t:"Odkładasz trudniejsze rzeczy na później i zaczynasz od łatwych.",s:"U"},{t:"Czujesz się przytłoczony/a i nie możesz w ogóle zacząć.",s:"E"}]},
+{text:"Przyjaciel odwołał wasze plany w ostatniej chwili po raz trzeci z rzędu.",answers:[{t:"Rozmawiasz spokojnie i mówisz, jak się z tym czujesz.",s:"Z"},{t:"Dajesz mu spokój i organizujesz coś dla siebie.",s:"U"},{t:"Czujesz się urażony/a i nie możesz przestać o tym myśleć.",s:"E"}]},
+{text:"Przed ważną rozmową kwalifikacyjną ogarnia cię silny stres.",answers:[{t:"Ćwiczysz odpowiedzi na pytania i robisz głębokie oddechy.",s:"Z"},{t:"Odwołujesz rozmowę, bo czujesz, że nie dasz rady.",s:"U"},{t:"Serce ci wali i nie możesz zebrać myśli.",s:"E"}]},
+{text:"Ktoś bliski zrobił coś wbrew twojej prośbie.",answers:[{t:"Wyrażasz swoje oczekiwania i ustalasz, co powinno wyglądać inaczej.",s:"Z"},{t:"Nie poruszasz tematu i próbujesz zapomnieć.",s:"U"},{t:"Czujesz smutek i złość i trudno ci tej osobie wybaczyć.",s:"E"}]},
+{text:"Nieoczekiwanie tracisz pracę lub stypendium.",answers:[{t:"Aktualizujesz CV i zaczynasz szukać nowych możliwości.",s:"Z"},{t:"Przez kilka dni nic nie robisz — potrzebujesz czasu, by przetrawić.",s:"U"},{t:"Czujesz się zagubiony/a i nie wierzysz, że coś się zmieni.",s:"E"}]},
+{text:"Masz prezentację, a technika zawodzi tuż przed startem.",answers:[{t:"Improwizujesz bez slajdów lub szybko szukasz innego urządzenia.",s:"Z"},{t:"Prosisz o przesunięcie wystąpienia na inny termin.",s:"U"},{t:"Wpadasz w panikę i nie wiesz co robić.",s:"E"}]},
+{text:"Masz trudną decyzję do podjęcia i każda opcja ma wady.",answers:[{t:"Piszesz plusy i minusy każdej opcji i konsultujesz z kimś zaufanym.",s:"Z"},{t:"Odkładasz decyzję i liczysz, że sytuacja sama się rozwiąże.",s:"U"},{t:"Czujesz się zablokowany/a i martwisz się konsekwencjami.",s:"E"}]},
+{text:"Podczas zawodów robisz błąd, który kosztuje drużynę punkty.",answers:[{t:"Skupiasz się na tym, co możesz teraz zrobić i dajesz z siebie wszystko.",s:"Z"},{t:"Chcesz zejść z boiska i czujesz się winny/a za wszystko.",s:"U"},{t:"Masz ochotę płakać i trudno ci wrócić do gry.",s:"E"}]},
+{text:"Twoje mieszkanie wymaga pilnego remontu, a nie masz pieniędzy.",answers:[{t:"Szukasz najtańszych rozwiązań, prosisz o pomoc, planujesz budżet.",s:"Z"},{t:"Żyjesz z problemem i masz nadzieję, że jakoś się ułoży.",s:"U"},{t:"Czujesz się bezsilny/a i przygnębiony/a tą sytuacją.",s:"E"}]},
+{text:"Osoba, na której ci zależało, odrzuca twoje uczucia.",answers:[{t:"Dajesz sobie czas na przeżycie tego i powoli budujesz życie dalej.",s:"Z"},{t:"Rzucasz się w wir zajęć, żeby nie mieć czasu na myślenie.",s:"U"},{t:"Czujesz ogromny ból i nie możesz myśleć o niczym innym.",s:"E"}]},
+{text:"W projekcie grupowym jeden z członków nie wywiązuje się z zadań.",answers:[{t:"Rozmawiasz z tą osobą i proponujesz podział obowiązków, który działa.",s:"Z"},{t:"Robisz jego zadanie sam/a, żeby uniknąć konfliktu.",s:"U"},{t:"Złościsz się i skarżysz się innym członkom grupy.",s:"E"}]},
+{text:"Twoja bliska osoba jest poważnie chora i potrzebuje opieki.",answers:[{t:"Organizujesz harmonogram opieki i szukasz wsparcia medycznego.",s:"Z"},{t:"Unikasz tematu, bo nie wiesz, jak sobie z tym poradzić.",s:"U"},{t:"Jesteś bardzo smutny/a i rozmyślasz o najgorszym scenariuszu.",s:"E"}]},
+{text:"Twój pociąg odjeżdża bez ciebie i spóźniasz się na ważne spotkanie.",answers:[{t:"Dzwonisz natychmiast, wyjaśniasz sytuację i szukasz alternatywy.",s:"Z"},{t:"Decydujesz, że nie ma sensu jechać i wracasz do domu.",s:"U"},{t:"Czujesz frustrację i wstyd, myślisz co sobie o tobie pomyślą.",s:"E"}]},
+{text:"Ktoś w pracy/szkole przypisuje sobie zasługi za twój pomysł.",answers:[{t:"Zaznaczasz swoje autorstwo spokojnie, ale wyraźnie.",s:"Z"},{t:"Dajesz spokój — nie warto się kłócić.",s:"U"},{t:"Czujesz się zdradzony/a i złość nie daje ci spokoju.",s:"E"}]},
+{text:"Masz za mało snu przez kilka dni z rzędu i jesteś wyczerpany/a.",answers:[{t:"Reorganizujesz harmonogram, by wygospodarować czas na sen.",s:"Z"},{t:"Pijesz więcej kawy i masz nadzieję, że wytrzymasz.",s:"U"},{t:"Jesteś rozdrażniony/a i czujesz, że wszystko jest ponad twoje siły.",s:"E"}]},
+{text:"Właśnie wychodzisz na scenę przed dużą publicznością.",answers:[{t:"Bierzesz głęboki oddech, skupiasz się na pierwszym zdaniu i zaczynasz.",s:"Z"},{t:"Prosisz kogoś, żeby cię zastąpił lub odwołujesz.",s:"U"},{t:"Serce wali ci jak szalone i masz pustkę w głowie.",s:"E"}]},
+{text:"Twój projekt końcowy jest odrzucony i musisz zacząć od nowa.",answers:[{t:"Prosisz o feedback i zaczynasz plan poprawek.",s:"Z"},{t:"Nie wiesz od czego zacząć, więc nie zaczynasz wcale.",s:"U"},{t:"Czujesz się rozbity/a i masz ochotę rzucić wszystko.",s:"E"}]},
+{text:"W środku rozmowy zdajesz sobie sprawę, że popełniłeś/aś poważny błąd.",answers:[{t:"Spokojnie przyznajesz się do błędu i proponujesz rozwiązanie.",s:"Z"},{t:"Próbujesz zmienić temat i odwrócić uwagę od błędu.",s:"U"},{t:"Czerwienisz się, zaczynasz się jąkać i czujesz ogromny wstyd.",s:"E"}]},
+{text:"Twój partner potrzebuje wsparcia, a ty sam/a jesteś wyczerpany/a.",answers:[{t:"Mówisz szczerze o swoim stanie i razem szukacie rozwiązania.",s:"Z"},{t:"Dajesz z siebie wszystko dla partnera, odkładając swoje potrzeby.",s:"U"},{t:"Czujesz się winny/a, że nie masz więcej siły.",s:"E"}]},
+{text:"Niespodziewany duży rachunek pojawia się w nieodpowiednim momencie.",answers:[{t:"Analizujesz budżet i szukasz, skąd pokryć koszty.",s:"Z"},{t:"Ignorujesz go przez chwilę i liczysz, że coś się zmieni.",s:"U"},{t:"Wpadasz w spiralę lęku o finanse i trudno ci funkcjonować.",s:"E"}]},
+{text:"Jesteś w konflikcie z dwoma bliskimi osobami jednocześnie.",answers:[{t:"Rozmawiasz z każdą osobą osobno, spokojnie szukając rozwiązania.",s:"Z"},{t:"Wycofujesz się od obu i dajesz sobie czas.",s:"U"},{t:"Czujesz się rozdarty/a i przytłoczony/a emocjami.",s:"E"}]},
+{text:"Twoja praca nie przynosi efektów mimo dużego wysiłku.",answers:[{t:"Szukasz nowych metod i pytasz kogoś doświadczonego o wskazówki.",s:"Z"},{t:"Robisz coraz mniej — po co się starać, skoro to nic nie daje.",s:"U"},{t:"Czujesz bezsilność i kwestionujesz swoje możliwości.",s:"E"}]}
+];
+
+var styles={
+  Z:{name:"Zadaniowy",emoji:"🎯",color:"#3730a3",desc:"Preferujesz styl zadaniowy — aktywnie szukasz rozwiązań, planujesz działania i podejmujesz konkretne kroki, by zmienić trudną sytuację. To bardzo skuteczna strategia dająca poczucie kontroli. Pamiętaj, by od czasu do czasu zatroszczyć się też o swoje emocje."},
+  U:{name:"Unikowy",emoji:"🌊",color:"#134e4a",desc:"Preferujesz styl unikowy — gdy sytuacja jest trudna, dajesz sobie czas, odwracasz uwagę lub odsuwasz problem na bok. Czasem to zdrowe — potrzeba chwili oddechu jest normalna. Warto jednak stopniowo ćwiczyć mierzenie się z wyzwaniami zamiast ich odkładania."},
+  E:{name:"Emocjonalny",emoji:"💛",color:"#7c2d12",desc:"Preferujesz styl emocjonalny — silnie przeżywasz trudne sytuacje, wyrażasz uczucia i szukasz zrozumienia u innych. Emocje są ważnym sygnałem i ich przeżywanie jest wartościowe. Możesz wzmocnić swoje radzenie sobie, ucząc się kierować te uczucia w stronę działania."}
+};
+
+var current=0, scores={Z:0,U:0,E:0}, chosen=null;
+var letters=["A","B","C"];
+
+function shuffle(a){var b=a.slice();for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=b[i];b[i]=b[j];b[j]=tmp;}return b;}
+var qs=questions.map(function(q){return{text:q.text,answers:shuffle(q.answers)};});
+
+function renderQ(){
+  var app=document.getElementById("app");
+  if(current>=qs.length){renderResult();return;}
+  var q=qs[current];
+  var pct=Math.round((current/qs.length)*100);
+  var html='<div class="header"><h1>🧠 Jak radzisz sobie ze stresem?</h1><p>Odpowiedz na 30 pytań i odkryj swój styl radzenia sobie z trudnościami</p></div>';
+  html+='<div class="progress-wrap"><div class="progress-track"><div class="progress-fill" id="pf" style="width:'+pct+'%"></div></div><div class="progress-text">Pytanie '+(current+1)+' z 30</div></div>';
+  html+='<div class="q-card"><div class="q-label">📌 Sytuacja '+(current+1)+'</div><div class="q-text">'+q.text+'</div></div>';
+  html+='<div class="answers" id="ans">';
+  for(var i=0;i<q.answers.length;i++){
+    var a=q.answers[i];
+    html+='<button class="ans-btn" data-s="'+a.s+'" data-i="'+i+'" onclick="pick(this)"><span class="ans-letter">'+letters[i]+'</span>'+a.t+'</button>';
+  }
+  html+='</div>';
+  html+='<button class="next-btn" id="nb" onclick="goNext()">'+(current<qs.length-1?'Następne pytanie ➜':'Zobacz wyniki 🎉')+'</button>';
+  app.innerHTML=html;
+  chosen=null;
+}
+
+function pick(btn){
+  var btns=document.querySelectorAll(".ans-btn");
+  for(var i=0;i<btns.length;i++){btns[i].className="ans-btn";}
+  btn.className="ans-btn active-"+btn.getAttribute("data-s");
+  chosen=btn.getAttribute("data-s");
+  document.getElementById("nb").className="next-btn ready";
+}
+
+function goNext(){
+  if(!chosen)return;
+  scores[chosen]++;
+  current++;
+  renderQ();
+}
+
+function renderResult(){
+  var total=scores.Z+scores.U+scores.E;
+  var dom="Z";
+  if(scores.U>scores[dom])dom="U";
+  if(scores.E>scores[dom])dom="E";
+  var info=styles[dom];
+  var app=document.getElementById("app");
+  var pZ=Math.round((scores.Z/total)*100);
+  var pU=Math.round((scores.U/total)*100);
+  var pE=Math.round((scores.E/total)*100);
+  var html='<div class="header"><h1>🧠 Twoje wyniki</h1><p>Odpowiedziałeś/aś na wszystkie 30 pytań</p></div>';
+  html+='<div class="result-wrap">';
+  html+='<div class="result-emoji">'+info.emoji+'</div>';
+  html+='<div class="result-sub">Twój dominujący styl radzenia sobie ze stresem to</div>';
+  html+='<div class="result-name" style="color:'+info.color+'">Styl '+info.name+'</div>';
+  html+='<div class="bars">';
+  html+='<div class="bar-row"><span class="bar-label" style="color:#3730a3">🎯 Zadaniowy</span><div class="bar-track"><div class="bar-fill fill-Z" style="width:'+pZ+'%"></div></div><span class="bar-pct">'+pZ+'%</span></div>';
+  html+='<div class="bar-row"><span class="bar-label" style="color:#134e4a">🌊 Unikowy</span><div class="bar-track"><div class="bar-fill fill-U" style="width:'+pU+'%"></div></div><span class="bar-pct">'+pU+'%</span></div>';
+  html+='<div class="bar-row"><span class="bar-label" style="color:#7c2d12">💛 Emocjonalny</span><div class="bar-track"><div class="bar-fill fill-E" style="width:'+pE+'%"></div></div><span class="bar-pct">'+pE+'%</span></div>';
+  html+='</div>';
+  html+='<div class="result-desc">'+info.desc+'</div>';
+  html+='<button class="restart-btn" onclick="restart()">🔄 Zacznij od nowa</button>';
+  html+='</div>';
+  app.innerHTML=html;
+}
+
+function restart(){current=0;scores={Z:0,U:0,E:0};chosen=null;renderQ();}
+
+renderQ();
+</script>
+</body>
+</html>
